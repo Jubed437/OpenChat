@@ -1,4 +1,4 @@
-# 💬 OpenChat
+#  OpenChat
 
 A modern, feature-rich real-time chat application built with **HTML**, **CSS**, **JavaScript**, and **Socket.IO**. This application allows users to create and join chat rooms, send messages in real-time, and interact with other users seamlessly.
 
@@ -8,7 +8,10 @@ A modern, feature-rich real-time chat application built with **HTML**, **CSS**, 
 
 ---
 
-## 📋 Table of Contents
+## Live Demo - 
+
+
+##  Table of Contents
 
 - [Features](#-features)
 - [Technologies Used](#-technologies-used)
@@ -403,6 +406,50 @@ Contributions are welcome! Here's how you can help:
 - Comment your code where necessary
 - Test your changes thoroughly
 - Update documentation if needed
+
+---
+
+## 📄 License
+
+## 🚀 Deployment on Vercel
+
+### Prerequisites for Deployment
+- GitHub account
+- Vercel account (free)
+- Your project pushed to a GitHub repository
+
+### Step-by-Step Deployment
+
+1. **Push your code to GitHub**
+   ```bash
+   git init
+   git add .
+   git commit -m "Initial commit"
+   git branch -M main
+   git remote add origin https://github.com/yourusername/openchat.git
+   git push -u origin main
+   ```
+
+2. **Deploy to Vercel**
+   - Go to [vercel.com](https://vercel.com) and sign in with GitHub
+   - Click "New Project"
+   - Import your OpenChat repository
+   - Vercel will automatically detect it's a Node.js project
+   - Click "Deploy"
+
+3. **Configuration**
+   - The `vercel.json` file is already configured for your project
+   - No additional environment variables needed for basic functionality
+
+4. **Access your deployed app**
+   - Your app will be available at `https://your-project-name.vercel.app`
+   - Share this URL with others to use your chat application
+
+### Important Notes for Vercel Deployment
+- Socket.IO works perfectly with Vercel's serverless functions
+- The app will automatically scale based on usage
+- HTTPS is enabled by default
+- Custom domains can be added in Vercel dashboard
 
 ---
 
