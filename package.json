@@ -1,0 +1,27 @@
+{
+  "name": "openchat",
+  "version": "1.0.0",
+  "description": "A real-time web-based chat application with multiple rooms and user authentication",
+  "main": "server/server.js",
+  "scripts": {
+    "start": "node server/server.js",
+    "dev": "nodemon server/server.js"
+  },
+  "keywords": [
+    "chat",
+    "realtime",
+    "websocket",
+    "socket.io",
+    "messaging"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "socket.io": "^4.6.1",
+    "validator": "^13.11.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}

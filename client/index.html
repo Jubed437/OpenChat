@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Real-time chat application with multiple rooms and user authentication">
+    <title>OpenChat</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    <div id="usernameModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Welcome to OpenChat</h2>
+                <p>Choose a unique username to get started</p>
+            </div>
+            <div class="modal-body">
+                <form id="usernameForm">
+                    <div class="input-group">
+                        <label for="usernameInput">Username</label>
+                        <input 
+                            type="text" 
+                            id="usernameInput" 
+                            placeholder="Enter your username" 
+                            maxlength="20"
+                            autocomplete="off"
+                            required
+                        >
+                        <small class="input-hint">2-20 characters, letters, numbers, spaces, - and _ only</small>
+                    </div>
+                    <div id="usernameError" class="error-message"></div>
+                    <button type="submit" class="btn btn-primary" id="joinBtn">
+                        Join Chat`
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="chatContainer" class="chat-container hidden">
+        <header class="chat-header">
+            <div class="header-content">
+                <h1 class="app-title">OpenChat</h1>
+                <div class="user-info">
+                    <span class="username-display" id="currentUsername"></span>
+                    <button class="btn btn-small btn-logout" id="logoutBtn" title="Logout">
+                         Logout
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <aside class="sidebar" id="sidebar">
+                <div class="sidebar-header">
+                    <h2>Chat Rooms</h2>
+                    <button class="btn btn-small btn-primary" id="createRoomBtn" title="Create New Room">
+                        + New Room
+                    </button>
+                </div>
+                
+                <div id="createRoomForm" class="create-room-form hidden">
+                    <input 
+                        type="text" 
+                        id="newRoomInput" 
+                        placeholder="Room name" 
+                        maxlength="30"
+                        autocomplete="off"
+                    >
+                    <div class="form-actions">
+                        <button class="btn btn-small btn-primary" id="confirmCreateRoom">Create</button>
+                        <button class="btn btn-small btn-secondary" id="cancelCreateRoom">Cancel</button>
+                    </div>
+                    <div id="roomError" class="error-message"></div>
+                </div>
+
+                <div class="room-list" id="roomList">
+                </div>
+
+                <div class="room-users">
+                    <h3>Users in Room</h3>
+                    <div id="usersList" class="users-list">
+                    </div>
+                </div>
+            </aside>
+
+            <main class="chat-area">
+                <div class="current-room-header">
+                    <button class="btn-toggle-sidebar" id="toggleSidebar" title="Toggle Sidebar">
+                        ☰
+                    </button>
+                    <h2 id="currentRoomName">Select a room to start chatting</h2>
+                    <div class="room-info">
+                        <span id="roomUserCount" class="user-count"></span>
+                    </div>
+                </div>
+
+                <div class="messages-container" id="messagesContainer">
+                    <div class="welcome-message">
+                        <h3>👋 Welcome to OpenChat!</h3>
+                        <p>Select a room from the sidebar or create a new one to start chatting</p>
+                    </div>
+                </div>
+
+                <div class="typing-indicator hidden" id="typingIndicator">
+                    <span class="typing-text"></span>
+                </div>
+
+                <div class="message-input-area">
+                    <div class="formatting-toolbar">
+                        <button class="format-btn" data-format="bold" title="Bold (Ctrl+B)">
+                            <strong>B</strong>
+                        </button>
+                        <button class="format-btn" data-format="italic" title="Italic (Ctrl+I)">
+                            <em>I</em>
+                        </button>
+                        <button class="format-btn" data-format="code" title="Code">
+                            &lt;/&gt;
+                        </button>
+                    </div>
+                    <form id="messageForm" class="message-form">
+                        <textarea 
+                            id="messageInput" 
+                            placeholder="Type your message... (Shift+Enter for new line)"
+                            rows="2"
+                            maxlength="500"
+                            autocomplete="off"
+                            disabled
+                        ></textarea>
+                        <button type="submit" class="btn-send" id="sendBtn" disabled title="Send Message">
+                            <span class="send-icon">➤</span>
+                        </button>
+                    </form>
+                    <div class="input-info">
+                        <span id="charCount" class="char-count">0/500</span>
+                        <span id="messageError" class="error-message"></span>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <div id="notificationContainer" class="notification-container"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
