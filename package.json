@@ -2,7 +2,7 @@
   "name": "openchat",
   "version": "1.0.0",
   "description": "A real-time web-based chat application with multiple rooms and user authentication",
-  "main": "server/server.js",
+  "main": "index.js",
   "scripts": {
     "start": "node server/server.js",
     "dev": "nodemon server/server.js"
@@ -23,5 +23,8 @@
   },
   "devDependencies": {
     "nodemon": "^3.0.1"
+  },
+  "engines": {
+    "node": ">=14.0.0"
   }
 }

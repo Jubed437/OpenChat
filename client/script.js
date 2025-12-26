@@ -42,7 +42,9 @@ function init() {
 }
 
 function initializeSocket() {
-    socket = io();
+    // Use the current domain for socket connection in production
+    const socketUrl = window.location.hostname === 'localhost' ? 'http://localhost:3000' : window.location.origin;
+    socket = io(socketUrl);
     
     socket.on('connect', () => {
         console.log('Connected to server');
