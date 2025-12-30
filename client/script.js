@@ -42,7 +42,12 @@ function init() {
 }
 
 function initializeSocket() {
-    socket = io({
+    // Use environment-specific socket URL
+    const socketUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+        ? 'http://localhost:3000'
+        : 'https://openchat-n3uj.onrender.com';
+    
+    socket = io(socketUrl, {
         transports: ['websocket', 'polling'],
         upgrade: true,
         rememberUpgrade: true
