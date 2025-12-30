@@ -6,7 +6,13 @@ const validator = require('validator');
 
 const app = express();
 const server = http.createServer(app);
-const io = socketIO(server);
+const io = socketIO(server, {
+    cors: {
+        origin: "*",
+        methods: ["GET", "POST"]
+    },
+    transports: ['websocket', 'polling']
+});
 
 const PORT = process.env.PORT || 3000;
 const MAX_USERNAME_LENGTH = 20;
@@ -15,6 +21,23 @@ const MAX_MESSAGE_LENGTH = 500;
 // Rate limiting: max 10 messages per 5 seconds
 const RATE_LIMIT_MESSAGES = 10;
 const RATE_LIMIT_INTERVAL = 5000;
+
+// LiveReload setup for development
+if (process.env.NODE_ENV !== 'production') {
+    const livereload = require('livereload');
+    const connectLivereload = require('connect-livereload');
+    
+    const liveReloadServer = livereload.createServer();
+    liveReloadServer.watch(path.join(__dirname, '../client'));
+    
+    liveReloadServer.server.once('connection', () => {
+        setTimeout(() => {
+            liveReloadServer.refresh('/');
+        }, 100);
+    });
+    
+    app.use(connectLivereload());
+}
 
 app.use(express.static(path.join(__dirname, '../client')));
 

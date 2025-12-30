@@ -42,9 +42,11 @@ function init() {
 }
 
 function initializeSocket() {
-    // Use the current domain for socket connection in production
-    const socketUrl = window.location.hostname === 'localhost' ? 'http://localhost:3000' : window.location.origin;
-    socket = io(socketUrl);
+    socket = io({
+        transports: ['websocket', 'polling'],
+        upgrade: true,
+        rememberUpgrade: true
+    });
     
     socket.on('connect', () => {
         console.log('Connected to server');
@@ -79,15 +81,7 @@ function setupEventListeners() {
     elements.messageForm.addEventListener('submit', handleMessageSubmit);
     elements.messageInput.addEventListener('input', handleMessageInput);
     elements.messageInput.addEventListener('keydown', handleMessageKeydown);
-    
-    document.querySelectorAll('.format-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            e.preventDefault();
-            handleFormatting(btn.dataset.format);
-        });
-    });
-    
-    document.addEventListener('keydown', handleKeyboardShortcuts);
+
 }
 
 function handleUsernameSubmit(e) {
@@ -133,7 +127,7 @@ function handleLogout() {
         elements.usernameModal.classList.remove('hidden');
         elements.usernameInput.value = '';
         elements.usernameError.textContent = '';
-        elements.messagesContainer.innerHTML = '<div class="welcome-message"><h3>👋 Welcome to OpenChat!</h3><p>Select a room from the sidebar or create a new one to start chatting</p></div>';
+        elements.messagesContainer.innerHTML = '<div class="welcome-message"><h3> Welcome to OpenChat!</h3><p>Select a room from the sidebar or create a new one to start chatting</p></div>';
         socket.connect();
         showNotification('Logged out successfully', 'success');
     }
@@ -344,58 +338,9 @@ function addSystemMessage(text) {
 
 function formatMessageContent(text) {
     let formatted = escapeHtml(text);
-    // Format: **bold**, *italic*, `code`, URLs
-    formatted = formatted.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-    formatted = formatted.replace(/__(.+?)__/g, '<strong>$1</strong>');
-    formatted = formatted.replace(/\*(.+?)\*/g, '<em>$1</em>');
-    formatted = formatted.replace(/_(.+?)_/g, '<em>$1</em>');
-    formatted = formatted.replace(/`(.+?)`/g, '<code>$1</code>');
     const urlPattern = /(https?:\/\/[^\s]+)/g;
     formatted = formatted.replace(urlPattern, '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>');
     return formatted;
-}
-
-function handleFormatting(format) {
-    const start = elements.messageInput.selectionStart;
-    const end = elements.messageInput.selectionEnd;
-    const text = elements.messageInput.value;
-    const selectedText = text.substring(start, end);
-    
-    let formattedText = '';
-    let cursorOffset = 0;
-    
-    switch (format) {
-        case 'bold':
-            formattedText = `**${selectedText}**`;
-            cursorOffset = selectedText ? 0 : 2;
-            break;
-        case 'italic':
-            formattedText = `*${selectedText}*`;
-            cursorOffset = selectedText ? 0 : 1;
-            break;
-        case 'code':
-            formattedText = `\`${selectedText}\``;
-            cursorOffset = selectedText ? 0 : 1;
-            break;
-    }
-    
-    elements.messageInput.value = text.substring(0, start) + formattedText + text.substring(end);
-    const newCursorPos = selectedText ? end + formattedText.length - selectedText.length : start + formattedText.length - cursorOffset;
-    elements.messageInput.setSelectionRange(newCursorPos, newCursorPos);
-    elements.messageInput.focus();
-    updateCharCount();
-}
-
-function handleKeyboardShortcuts(e) {
-    if (e.ctrlKey && e.key === 'b') {
-        e.preventDefault();
-        handleFormatting('bold');
-    }
-    
-    if (e.ctrlKey && e.key === 'i') {
-        e.preventDefault();
-        handleFormatting('italic');
-    }
 }
 
 function handleUserJoined(data) {
