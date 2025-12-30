@@ -8,7 +8,7 @@ A modern, feature-rich real-time chat application built with **HTML**, **CSS**, 
 
 ---
 
-## Live Demo - 
+## Live Demo - https://open-chat-topaz.vercel.app/
 
 
 ##  Table of Contents
